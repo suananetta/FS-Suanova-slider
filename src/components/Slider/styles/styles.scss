@@ -1,0 +1,77 @@
+@mixin display-setting($direction, $content, $items) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $content;
+    align-items: $items;
+}
+
+@mixin font-setting($weight, $size, $height) {
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $height;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.03);
+        transition: 0.3s;
+    }
+}
+
+.slider-block {
+    @include display-setting(column, center, center);
+    span {
+        margin: 32px 0;
+        text-align: center;
+        text-transform: lowercase;
+    }
+}
+.slider-body {
+    position: relative;
+    width: 100vh;
+    height: 90vh;
+    @include display-setting(row, space-between, center);
+}
+.arrow {
+    z-index: 999;
+    margin-bottom: 50px;
+}
+.slider-content {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    right: 0;
+    transition: opacity 800ms ease;
+    @include display-setting(column, center, center);
+    &.active {
+        opacity: 1;       
+    }
+}
+.slider-img {
+    width: 70vh;
+    height: 70vh;
+    border-radius: 15px;
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;
+}
+.slider-dots {
+    width: 10%;
+    @include display-setting(row, space-between, center);
+}
+.dot {
+    padding: 5px;
+    background-color:bisque;
+    border-radius: 50%;
+    &:hover {
+        background-color: brown;
+        cursor: pointer;
+        transform: scale(1.03);
+        transition: 0.3s;
+    }
+    &.active {
+        background-color: brown;
+    }
+}
