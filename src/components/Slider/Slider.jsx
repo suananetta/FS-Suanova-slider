@@ -22,51 +22,53 @@ function Slider({settings}) {
     let arrowForward = <span className="material-symbols-outlined">arrow_forward_ios</span>;
     let autoPlay = <span className="material-symbols-outlined">autoplay</span>;
     let interval;
-    if(playAuto) {
-        interval = setInterval(() => {
-        let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
 
-        console.log(currentSlide);
-        console.log(nextSlide);
-        document.querySelector('.active').classList.remove('active');
-        document.querySelector('.item' + nextSlide).classList.add('active');
+    useEffect(() => {
+        if(playAuto) {
+            interval = setInterval(() => {
+            let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
 
-        setCurrentSlide(nextSlide);
+            console.log(currentSlide);
+            console.log(nextSlide);
+            document.querySelector('.active').classList.remove('active');
+            document.querySelector('.item' + nextSlide).classList.add('active');
 
-        for(let dot of dots) {
-            dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            setCurrentSlide(nextSlide);
+
+            for(let dot of dots) {
+                dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            }
+        }, 3000);
         }
-    }, 3000);}
-
-    if(!playAuto) clearInterval(interval);
-
-    // useEffect(() => {
-    //     let interval;
-    //     if(playAuto) {
-    //         interval = setInterval(() => {
-    //         let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
-
-    //         console.log(currentSlide);
-    //         console.log(nextSlide);
-    //         document.querySelector('.active').classList.remove('active');
-    //         document.querySelector('.item' + nextSlide).classList.add('active');
-
-    //         setCurrentSlide(nextSlide);
-
-    //         for(let dot of dots) {
-    //             dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
-    //         }
-    //     }, 3000);
-    //     }
-    //     if(!playAuto) clearInterval(interval);
-    // }, [])
-
+        if(!playAuto) clearInterval(interval);
+    }, [playAuto])
+    
     let autoPlayOn = () => {
+        // !autoPlay?
+        // interval = clearInterval(interval)
+        // :
+        interval = setInterval(() => {
+            let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
 
+            console.log(currentSlide);
+            console.log(nextSlide);
+            document.querySelector('.active').classList.remove('active');
+            document.querySelector('.item' + nextSlide).classList.add('active');
+
+            setCurrentSlide(nextSlide);
+
+            for(let dot of dots) {
+                dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            }
+        }, 3000)
     }
 
+    // if(playAuto) autoPlayOn();
+    // if(!playAuto) clearInterval(interval);
+
     let handleArrowClick = (e) => {
-        clearInterval(interval);
+        // setPlayAuto(false);
+        // clearInterval(interval);
         if (e.currentTarget.className.includes('forward')) {
             let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
 
@@ -91,6 +93,7 @@ function Slider({settings}) {
     }
 
     let handleDotClick = (e) => {
+        setPlayAuto(false);
         clearInterval(interval);
 
         document.querySelector('.active').classList.remove('active');
