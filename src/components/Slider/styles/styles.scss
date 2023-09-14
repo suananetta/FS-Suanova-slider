@@ -24,7 +24,7 @@ button {
 .slider-block {
     @include display-setting(column, center, center);
     span {
-        margin: 32px 0;
+        margin: 24px 0;
         text-align: center;
         text-transform: lowercase;
     }
@@ -59,6 +59,7 @@ button {
 }
 .slider-dots {
     width: 10%;
+    margin-bottom: 24px;
     @include display-setting(row, space-between, center);
 }
 .dot {
@@ -73,5 +74,11 @@ button {
     }
     &.active {
         background-color: brown;
+    }
+}
+.autoPlayBtn {
+    &:hover {
+        transform: scale(1.03) rotate(15deg);
+        transition: 1s;
     }
 }

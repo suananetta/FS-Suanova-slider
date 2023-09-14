@@ -8,12 +8,18 @@ import Slider from './components/Slider/Slider';
 function App() {
   const dispatch = useDispatch();
 
+  let settings = {
+    dots: true,
+    arrows: true,
+    autoPlay: true
+  }
+
   useEffect(() => {
     dispatch(getPictures());
   }, [])
 
   return (
-    <Slider/>
+    <Slider settings={settings}/>
   );
 }
 
