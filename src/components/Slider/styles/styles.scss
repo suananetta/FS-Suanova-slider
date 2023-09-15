@@ -31,8 +31,8 @@ button {
 }
 .slider-body {
     position: relative;
-    width: 100vh;
-    height: 90vh;
+    width: 35vh;
+    height: 50vh;
     @include display-setting(row, space-between, center);
 }
 .arrow {
@@ -51,14 +51,14 @@ button {
     }
 }
 .slider-img {
-    width: 70vh;
-    height: 70vh;
+    width: 35vh;
+    height: 35vh;
     border-radius: 15px;
     background-size: 100% 100%; 
     background-repeat: no-repeat;
 }
 .slider-dots {
-    width: 10%;
+    width: 50%;
     margin-bottom: 24px;
     @include display-setting(row, space-between, center);
 }
@@ -80,5 +80,32 @@ button {
     &:hover {
         transform: scale(1.03) rotate(15deg);
         transition: 1s;
+    }
+}
+
+@media (min-width: 600px) {
+    .slider-body {
+        width: 60vh;
+        height: 70vh;
+    }
+    .slider-img {
+        width: 50vh;
+        height: 50vh;
+    }
+    .slider-dots {
+        width: 30%;
+    }
+}
+@media (min-width: 1024px) {
+    .slider-body {
+        width: 90vh;
+        height: 90vh;
+    }
+    .slider-img {
+        width: 70vh;
+        height: 70vh;
+    }
+    .slider-dots {
+        width: 20%;
     }
 }
