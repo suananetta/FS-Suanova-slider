@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import './App.css';
 
 import { getPictures } from './_redux-toolkit/PicsSlice';
 import { identifyDevice, switchArrows } from './_redux-toolkit/SettingsSlice';
 import { useResize } from './_hooks/useResize';
+import Loader from './_shared/Loader/Loader';
 import Slider from './components/Slider/Slider';
 
 function App() {
   const dispatch = useDispatch();
-
+  const picsData = useSelector((state) => state.pictures);
+  
   useEffect(() => {
     dispatch(getPictures());
   }, [])
@@ -30,7 +33,14 @@ function App() {
   }, [screenW])
 
   return (
-    <Slider/>
+    <main>
+      {
+        picsData.loading || picsData.pics.length === 0? 
+          <Loader/>
+          :
+          <Slider/>
+      }
+    </main>
   );
 }
 

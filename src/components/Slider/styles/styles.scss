@@ -47,6 +47,7 @@ button {
     transition: opacity 800ms ease;
     @include display-setting(column, center, center);
     &.active {
+        z-index: 996;
         opacity: 1;       
     }
 }
@@ -58,7 +59,7 @@ button {
     background-repeat: no-repeat;
 }
 .slider-dots {
-    width: 50%;
+    width: 90%;
     margin-bottom: 24px;
     @include display-setting(row, space-between, center);
 }
@@ -85,15 +86,15 @@ button {
 
 @media (min-width: 600px) {
     .slider-body {
-        width: 60vh;
+        width: 65vh;
         height: 70vh;
     }
     .slider-img {
-        width: 50vh;
-        height: 50vh;
+        width: 45vh;
+        height: 45vh;
     }
     .slider-dots {
-        width: 30%;
+        width: 50%;
     }
 }
 @media (min-width: 1024px) {
@@ -106,6 +107,6 @@ button {
         height: 70vh;
     }
     .slider-dots {
-        width: 20%;
+        width: 33%;
     }
 }

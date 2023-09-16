@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     dots: true,
     arrows: true,
-    autoPlay: true,
-    device: 'mobile'
+    autoDuration: 3000,
+    device: ''
 }
 
 export const settingsSlice = createSlice({

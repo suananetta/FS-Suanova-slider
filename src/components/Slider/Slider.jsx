@@ -1,77 +1,53 @@
-// import uniqid from 'uniqid';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles/styles.min.css';
 
 import Button from '../../_shared/Button/Button';
-import Loader from '../../_shared/Loader/Loader';
-import { switchArrows } from '../../_redux-toolkit/SettingsSlice';
-// import { getPictures } from '../../_redux-toolkit/PicsSlice';
 
 function Slider() {
-    const dispatch = useDispatch();
 
     const picsData = useSelector((state) => state.pictures);
     const settingsData = useSelector((state) => state.settings);
-    // console.log(settingsData);
+
     let [currentSlide, setCurrentSlide] = useState(0);
+    let [timer, setTimer] = useState(null);
     let [playAuto, setPlayAuto] = useState(false);
-    console.log(playAuto);
-    let interval;
+
     let dots = document.querySelectorAll('.dot');
 
     let arrowBack = <span className="material-symbols-outlined">arrow_back_ios</span>;
     let arrowForward = <span className="material-symbols-outlined">arrow_forward_ios</span>;
     let autoPlay = <span className="material-symbols-outlined">autoplay</span>;
+    let autoStop = <span className="material-symbols-outlined">autostop</span>;
 
-    let pictures = JSON.parse(localStorage.getItem('pictures'));
-
-    useEffect(() => {
-        if(!picsData.loading || picsData.pics.length > 0) {
-            document.querySelector('.active').addEventListener('touchend', () => {
-                slideForward();
-            })
-        }
-    }, [currentSlide])
-
-    useEffect(() => {
-           interval = setInterval(() => {
-                slideForward();
-            }, 3000);
-            // clearInterval(interval);
-    }, [[], currentSlide])
-    
     let slideForward = () => {
         let nextSlide = currentSlide + 1 >= picsData.pics.length? 0 : currentSlide + 1;  
 
-        document.querySelector('.active').classList.remove('active');
-        document.querySelector('.item' + nextSlide).classList.add('active');
+        document.querySelector('div.slider-content.active').classList.remove('active');
+        document.querySelector('div.slider-content.item'+nextSlide).classList.add('active');
 
-        setCurrentSlide(nextSlide)
+        setCurrentSlide(nextSlide);
 
         for(let dot of dots) {
-            dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            dot.id === document.querySelector('div.slider-content.active').id? dot.classList.add('active') : dot.classList.remove('active');
         }  
     }
 
     let slideBack = () => {
         let nextSlide = currentSlide - 1 < 0 ? picsData.pics.length - 1 : currentSlide - 1;  
 
-        document.querySelector('.active').classList.remove('active');
-        document.querySelector('.item' + nextSlide).classList.add('active');
+        document.querySelector(`div.slider-content.item${currentSlide}.active`).classList.remove('active');
+        document.querySelector(`div.slider-content.item${nextSlide}`).classList.add('active');
         
         setCurrentSlide(nextSlide)
 
         for(let dot of dots) {
-            dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            dot.id === document.querySelector('div.slider-content.active').id? dot.classList.add('active') : dot.classList.remove('active');
         }  
     }
 
     let handleArrowClick = (e) => {
-        // setPlayAuto(false);
-        // clearInterval(interval);
-
         if (e.currentTarget.className.includes('forward')) {
             slideForward()
         } 
@@ -82,19 +58,52 @@ function Slider() {
     }
 
     let handleDotClick = (e) => {
-        // setPlayAuto(false);
-        // clearInterval(interval);
 
-        document.querySelector('.active').classList.remove('active');
+        document.querySelector('div.slider-content.active').classList.remove('active');
         document.getElementById(e.target.id).classList.add('active');
 
         let currentDotSlide = +document.getElementById(e.target.id).getAttribute('index');
         setCurrentSlide(currentDotSlide);
 
         for(let dot of dots) {
-            dot.id === document.querySelector('.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            dot.id === document.querySelector('div.slider-content.active').id? dot.classList.add('active') : dot.classList.remove('active');
         }       
     }
+
+    let turnOnInterval = (duration) => {
+        let autoCurrentSlide = currentSlide;
+        setTimer(setInterval(() => {
+            let nextSlide = autoCurrentSlide + 1 >= picsData.pics.length? 0 : autoCurrentSlide + 1;  
+
+            document.querySelector('div.slider-content.active').classList.remove('active');
+            document.querySelector('div.slider-content.item'+nextSlide).classList.add('active');
+            
+            autoCurrentSlide = nextSlide;
+            setCurrentSlide(nextSlide);
+
+            for(let dot of dots) {
+                dot.id === document.querySelector('div.slider-content.active').id? dot.classList.add('active') : dot.classList.remove('active');
+            }  
+        }, duration))
+    }
+
+    let turnOffInterval = () => {
+        clearInterval(timer)
+        setTimer(null);
+    }
+
+    useEffect(() => {
+        if(settingsData.device === 'mobile') {
+            document.querySelector('div.slider-content.active').addEventListener('touchend', () => {
+                slideForward();
+            })
+        }
+        if(settingsData.device !== 'mobile') {
+            document.querySelector('div.slider-content').removeEventListener('touchend', () => {
+                slideForward();
+            })
+        }
+    }, [currentSlide])
 
     return (
         <div className='slider-block'> 
@@ -108,13 +117,9 @@ function Slider() {
                     :
                     <></>
                 }
-                {
-                    picsData.loading || picsData.pics.length === 0? 
-                        <Loader/>
-                        :
-                        pictures.map((img, index) => {
+                {   picsData.pics.map((img, index) => {
                             return (
-                                <div key={img.id} className={`slider-content item${index} ${index === 0? 'active' : ''}`} id={img.id} index={index}>
+                                <div key={img.id} className={`slider-content item${index} ${index === 0? 'active' : ''}`} id={img.id}>
                                     <div className='slider-img' style={{backgroundImage: `url(${img.urls.full})`}}></div>
                                     <span>{img.alt_description}</span>
                                 </div>
@@ -133,7 +138,7 @@ function Slider() {
             </div>
             <div className='slider-dots'>
                 {settingsData.dots? 
-                    pictures.map((img, index) => {
+                    picsData.pics.map((img, index) => {
                         return (
                             <Button 
                                 key={img.id}
@@ -149,12 +154,17 @@ function Slider() {
                 }
             </div>
             <Button 
-                btnName={autoPlay}
-                btnClass='autoPlayBtn forward'
-                onClick={()=>{
+                btnName={playAuto? autoStop : autoPlay}
+                btnClass={playAuto? 'autoPlayBtn stop' : 'autoPlayBtn play'}
+                onClick={(e) => {
                     setPlayAuto(!playAuto);
-                    // clearInterval(interval);
-                }}
+                    if(e.currentTarget.className.includes('play')) {
+                        turnOnInterval(settingsData.autoDuration);
+                    } 
+                    if(e.currentTarget.className.includes('stop')) {
+                        turnOffInterval();
+                    } 
+                }} 
             />
         </div>
     )

@@ -15,19 +15,16 @@ export const getPictures = createAsyncThunk(
     }
 )
 
-export const picsSlice = createSlice({
-    name: 'pictures',
+export const picturesSlice = createSlice({
+    name: 'picturesSlice',
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getPictures.pending, (state) => {state.loading = true;})
             .addCase(getPictures.fulfilled, (state, action) => {
                 state.loading = false;
                 state.pics = action.payload;
-                localStorage.setItem('pictures', JSON.stringify(action.payload))
             })
             .addCase(getPictures.rejected, (state, action) => {
                 state.loading = false;
@@ -36,5 +33,5 @@ export const picsSlice = createSlice({
     }
 })
 
-export const {  } = picsSlice.actions;
-export default picsSlice.reducer;
+export const {} = picturesSlice.actions;
+export default picturesSlice.reducer;
