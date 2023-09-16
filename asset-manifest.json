@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/FS-Suanova-slider/static/css/main.438f83a6.css",
+    "main.js": "/FS-Suanova-slider/static/js/main.cd4dd0b7.js",
+    "index.html": "/FS-Suanova-slider/index.html",
+    "main.438f83a6.css.map": "/FS-Suanova-slider/static/css/main.438f83a6.css.map",
+    "main.cd4dd0b7.js.map": "/FS-Suanova-slider/static/js/main.cd4dd0b7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.438f83a6.css",
+    "static/js/main.cd4dd0b7.js"
+  ]
+}
